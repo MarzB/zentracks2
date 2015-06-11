@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @locations = Location.all
+    @locations = Location.where({ :trip_id => current_user.id })
   end
 
   def show
@@ -17,7 +17,7 @@ class LocationsController < ApplicationController
     @location = Location.new
     @location.country = params[:country]
     @location.position = params[:position]
-    @location.trip_id = params[:trip_id]
+    @location.trip_id = current_user.id
     @location.city = params[:city]
     @location.state = params[:state]
 
@@ -37,7 +37,7 @@ class LocationsController < ApplicationController
 
     @location.country = params[:country]
     @location.position = params[:position]
-    @location.trip_id = params[:trip_id]
+    @location.trip_id = current_user.id
     @location.city = params[:city]
     @location.state = params[:state]
 
