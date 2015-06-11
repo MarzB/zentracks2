@@ -1,0 +1,129 @@
+<style>
+  .container-fluid {
+    padding: 0;
+  }
+
+  .col-md-3 {
+    /*padding-top: 70px;*/
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .navbar {
+    margin-bottom: 0;
+  }
+
+  div.list-group-item {
+    border-top: none;
+  }
+
+  /*.gm-style {
+    padding-right: 0;
+  }*/
+</style>
+
+<% @page_margin = capture do %>
+67px
+<% end %>
+
+<!-- <p><strong>Can only "Add Another Itinerary" for Destinations that have already been created!</strong></p> -->
+<!-- Responsive sidebar -->
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-sort"></i> <%= @trip.trip_name %>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="btn-group-sm btn-group-justified">
+              <a href="/trips" class="btn btn-default">
+                <i class="fa fa-chevron-left"></i>
+              </a>
+
+              <a href="/trips/<%= @trip.id %>/edit" class="btn btn-default">
+                <i class="fa fa-edit"></i>
+              </a>
+
+              <a href="/delete_trip/<%= @trip.id %>" class="btn btn-default" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List of Destinations within Trip -->
+
+      <ul class="list-group" id="sortable">
+
+      <% @trip.itineraries.order("arrival_date_time ASC").each do |itinerary| %>
+        <li class="list-group-item" id="itinerary-<%= itinerary.id %>">
+          <div class="btn-group">
+            <a class="btn btn-warning btn-sm" href="/itineraries/<%= itinerary.location_id %>/edit"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger btn-sm" rel="nofollow" data-remote="true" href="/delete_itinerary/<%= itinerary.id %>"><i class="fa fa-trash-o"></i></a>
+          </div>
+          &nbsp;
+
+          <a href="#" class="location_toggle" data-location-id="<%= itinerary.id %>">
+            <%= itinerary.location.city %>, <%= itinerary.location.country %>
+          </a>
+          <div id="location_<%= itinerary.id %>" style="display: none;" class="list-group-item">
+            <dl>
+              <p>
+                <dt><strong>Arrival</strong></dt>
+                <dd><%= itinerary.arrival_date_time.strftime('%B %e, %Y at %l:%M %p') %></dd>
+              </p>
+              <p>
+                <dt><strong>Departure</strong></dt>
+                <dd><%= itinerary.departure_date_time.strftime('%B %e, %Y at %l:%M %p') %></dd>
+              </p>
+              <p>
+                <dt><strong>Street Address</strong></dt>
+                <dd><%= itinerary.street_address %></dd>
+              </p>
+            </dl>
+          </div>
+        </li>
+
+      <% end %>
+
+<!--       <li class="list-group-item">
+        <a href="/itineraries/new?trip_id=<%= @trip.id %>">
+          Add Another Itinerary
+        </a>
+      </li> -->
+    </ul>
+
+    </div>
+
+  </div>
+
+  <!-- End responsive sidebar -->
+
+  <!-- Map-->
+
+  <div class="col-md-9" id='gmaps-canvas'>
+      <iframe width="100%" height="100%" frameborder="0" style="border:0" src="http://maps.google.com/maps/api/js?sensor=false"></iframe>
+  </div>
+</div>
+
+
+
+<!-- Javascript for Sidebar Functionality-->
+
+<script>
+$(function() {
+  $('.location_toggle').on('click', function() {
+    $('#location_' + $(this).data('location-id')).slideToggle();
+  });
+
+});
+
+</script>
+
+

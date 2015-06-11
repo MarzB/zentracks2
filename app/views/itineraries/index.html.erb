@@ -1,0 +1,127 @@
+ <div class="page-header">
+
+<style>
+
+  .panel-body {
+    padding: 15px;
+  }
+</style>
+
+<div class="row">
+  <h1 class='col-md-3'>
+    Itineraries
+    <a href="/itineraries/new" class="btn btn-md btn-success"><i class="fa fa-plus"></i></a>
+  </h1>
+
+    <div class="col-md-9">
+      <input type="text" id="quicksearch" placeholder="Search Itineraries (start typing)" class="form-control">
+    </div>
+  </div>
+
+</div>
+
+<!-- Responsive, Isotope-based layout example -->
+
+<p>Click the green + above to associate itineraries with the locations you just added.</p>
+<p>After you have added your Itineraries, go back to your <a href="/trips">TRIPS</a> and click on the blue button to view your destinations and itineraries alongside map.</p>
+
+<hr>
+
+<div class="row isotope-container">
+<% @itineraries.each do |itinerary| %>
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 isotope-item">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= itinerary.location.city %>, <%= itinerary.location.country %></h3>
+      </div>
+      <div class="panel-body">
+        <dl>
+          <p>
+            <dt><strong>Arrival date time</strong></dt>
+            <dd><%= itinerary.arrival_date_time.strftime('%B %e, %Y at %l:%M %p') %></dd>
+          </p>
+
+          <p>
+            <dt><strong>Departure date time</strong></dt>
+            <dd><%= itinerary.departure_date_time.strftime('%B %e, %Y at %l:%M %p') %></dd>
+          </p>
+
+          <p>
+            <dt><strong>Street address</strong></dt>
+            <dd><%= itinerary.street_address %></dd>
+          </p>
+
+          <!-- <dt>Location</dt>
+          <dd><%= itinerary.location.city %>, <%= itinerary.location.country %></dd> -->
+          <p>
+            <dt><strong>Trip</strong></dt>
+            <dd><%= itinerary.trip.trip_name %></dd>
+          </p>
+
+        </dl>
+        <div class="btn-group btn-sm btn-group-justified">
+<!--           <a href="/itineraries/<%= itinerary.id %>" class="btn btn-primary">
+            <i class="fa fa-search-plus"></i>
+          </a> -->
+
+          <a href="/itineraries/<%= itinerary.id %>/edit" class="btn btn-warning">
+            <i class="fa fa-edit"></i>
+          </a>
+
+          <a href="/delete_itinerary/<%= itinerary.id %>" class="btn btn-danger" rel="nofollow">
+            <i class="fa fa-trash-o"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>
+
+<!-- You can ignore the following. It's a quick and dirty example of how to get a Pinterest-style layout with quick search. -->
+<!-- JavaScript for Isotope layout and quicksearch -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.1.8/imagesloaded.pkgd.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.0.0/isotope.pkgd.min.js"></script>
+<script>
+  $(function() {
+    // quick search regex
+    var qsRegex;
+
+    // init Isotope
+    var $container = $('.isotope-container');
+
+    $container.imagesLoaded(function() {
+      $container.isotope({
+        itemSelector: '.isotope-item',
+        layoutMode: 'masonry',
+        filter: function() {
+          return qsRegex ? $(this).text().match( qsRegex ) : true;
+        }
+      })
+    });
+
+    // use value of search field to filter
+    var $quicksearch = $('#quicksearch').keyup( debounce( function() {
+      qsRegex = new RegExp( $quicksearch.val(), 'gi' );
+      $container.isotope();
+    }, 200 ) );
+
+  });
+
+  // debounce so filtering doesn't happen every millisecond
+  function debounce( fn, threshold ) {
+    var timeout;
+    return function debounced() {
+      if ( timeout ) {
+        clearTimeout( timeout );
+      }
+      function delayed() {
+        fn();
+        timeout = null;
+      }
+      timeout = setTimeout( delayed, threshold || 100 );
+    }
+  }
+</script>
+
+<!-- End responsive, Isotope-based layout example -->

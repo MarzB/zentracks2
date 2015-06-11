@@ -1,0 +1,55 @@
+<!-- Responsive panel example-->
+
+<div class="row">
+  <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= @location.city %>, <%= @location.country %></h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <dl class="dl-horizontal">
+              <p>
+              <dt><strong>Country</strong></dt>
+              <dd><%= @location.country %></dd>
+              </p>
+
+<!--               <dt>Position</dt>
+              <dd><%= @location.position %></dd>
+
+              <dt>Trip</dt>
+              <dd><%= @location.trip_id %></dd> -->
+
+              <p>
+              <dt><strong>City</strong></dt>
+              <dd><%= @location.city %></dd>
+              </p>
+
+              <p>
+              <dt><strong>State</strong></dt>
+              <dd><%= @location.state %></dd>
+              </p>
+
+            </dl>
+            <div class="btn-group btn-group-justified">
+              <a href="/locations" class="btn btn-primary">
+                <i class="fa fa-chevron-left"></i>
+              </a>
+
+              <a href="/locations/<%= @location.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+
+              <a href="/delete_location/<%= @location.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End responsive panel example -->

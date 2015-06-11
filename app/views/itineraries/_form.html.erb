@@ -1,0 +1,62 @@
+<!-- Hidden input for authenticity token to protect from forgery -->
+<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+<!-- Label and input for arrival_date_time -->
+<div class="form-group">
+  <label for="arrival_date_time" class="col-sm-2 control-label">
+    <strong>Arrival date time</strong>
+  </label>
+  <div class="col-sm-10">
+    <input type="text" id="arrival_date_time" name="arrival_date_time" placeholder="Arrival date time" class="form-control" value="<%= @itinerary.arrival_date_time.try(:strftime, '%B %e, %Y at %l:%M %p') %>">
+  </div>
+</div>
+
+<!-- Label and input for departure_date_time -->
+<div class="form-group">
+  <label for="departure_date_time" class="col-sm-2 control-label">
+    <strong>Departure date time</strong>
+  </label>
+  <div class="col-sm-10">
+    <input type="text" id="departure_date_time" name="departure_date_time" placeholder="Departure date time" class="form-control" value="<%= @itinerary.departure_date_time.try(:strftime, '%B %e, %Y at %l:%M %p') %>">
+  </div>
+</div>
+
+<!-- Label and input for street_address -->
+<div class="form-group">
+  <label for="street_address" class="col-sm-2 control-label">
+    <strong>Street address</strong>
+  </label>
+  <div class="col-sm-10">
+    <input type="text" id="street_address" name="street_address" placeholder="Street address" class="form-control" value="<%= @itinerary.street_address %>">
+  </div>
+</div>
+
+<!-- Label and input for location_id -->
+<div class="form-group">
+  <label for="location_id" class="col-sm-2 control-label">
+    <strong>Location</strong>
+  </label>
+  <div class="col-sm-10">
+    <%= select_tag(:location_id, options_from_collection_for_select(Location.all, :id, :city, @itinerary.location_id), :class => "form-control") %>
+  </div>
+</div>
+
+<!-- Label and input for trip_id -->
+<div class="form-group">
+  <label for="trip_id" class="col-sm-2 control-label">
+    <strong>Trip</strong>
+  </label>
+  <div class="col-sm-10">
+    <%= select_tag(:trip_id, options_from_collection_for_select(Trip.all, :id, :trip_name, @itinerary.trip_id), :class => "form-control") %>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <button class="btn btn-success">
+      Create Itinerary
+    </button>
+    or
+    <a href="/itineraries">Cancel</a>
+  </div>
+</div>
