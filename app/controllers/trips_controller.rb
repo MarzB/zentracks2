@@ -2,7 +2,7 @@ class TripsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @trips = Trip.all
+    @trips = Trip.where({ :user_id => current_user.id })
   end
 
   def show
@@ -16,7 +16,7 @@ class TripsController < ApplicationController
 
   def create
     @trip = Trip.new
-    @trip.user_id = params[:user_id]
+    @trip.user_id = current_user.id
     @trip.trip_name = params[:trip_name]
 
     if @trip.save
@@ -33,7 +33,7 @@ class TripsController < ApplicationController
   def update
     @trip = Trip.find(params[:id])
 
-    @trip.user_id = params[:user_id]
+    @trip.user_id = current_user.id
     @trip.trip_name = params[:trip_name]
 
     if @trip.save
